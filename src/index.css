@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+ .borderLoading {
+
+    @apply   text-3xl flex justify-center items-center shadow-xl my-10 h-32 w-48 animate-bounce p-4 border-2 transition-all duration-300 rounded-lg
+
+
+}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import QuenstData from "../Data/QuenstData";
 import Items from "./Items";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,6 +19,7 @@ const Main = () => {
   const Start = useSelector((state: any) => state.Start);
   const Score = useSelector((state: any) => state.Score);
   const [UserAnswers, setUserAnswers] = useState<UserAnswerss[]>([]);
+  const [loadingState, setLoadingState] = useState<number>(0);
 
   const ScoreIntrease = () => {
     Dispatch(actions.ScoreButton());
@@ -27,7 +28,7 @@ const Main = () => {
   const nextStage = () => {
     Dispatch(actions.LoadingButton(1));
 
-    setTimeout(() => Dispatch(actions.LoadingButton(0)), 1000);
+    setTimeout(() => Dispatch(actions.LoadingButton(0)), 3000);
 
     if (counter < Datas.length - 1) {
       setCounter((us) => us + 1);
@@ -40,7 +41,7 @@ const Main = () => {
     setUserAnswers([]);
     Dispatch(actions.LoadingButton(1));
 
-    setTimeout(() => Dispatch(actions.LoadingButton(0)), 1000);
+    setTimeout(() => Dispatch(actions.LoadingButton(0)), 2000);
   };
 
   const CheckQuestion = (e: React.MouseEvent<HTMLButtonElement>): void => {
@@ -61,6 +62,23 @@ const Main = () => {
 
     setUserAnswers((pre) => [...pre, newUser]);
   };
+
+  useEffect(() => {
+    if (Loadings === 1) {
+      setTimeout(() => setLoadingState(1), 500);
+      if (loadingState > 3) {
+        setLoadingState(0);
+      } else if (loadingState === 1) {
+        setTimeout(() => setLoadingState(2), 500);
+      } else if (loadingState === 2) {
+        setTimeout(() => setLoadingState(3), 500);
+      } else if (loadingState === 3) {
+        setTimeout(() => setLoadingState(0), 500);
+      }
+    } else {
+      setTimeout(() => setLoadingState(0), 500);
+    }
+  }, [loadingState, Loadings]);
 
   return (
     <div
@@ -94,8 +112,38 @@ const Main = () => {
       )}
 
       {Loadings === 1 && (
-        <div className="text-2xl shadow-xl my-10 animate-bounce p-4 border-2 border-black rounded-lg">
-          Loading ...{" "}
+        <div
+          className={
+            loadingState === 1
+              ? "border-blue-700 borderLoading"
+              : loadingState === 2
+              ? "border-green-600 borderLoading"
+              : "border-yellow-400 borderLoading"
+          }
+        >
+          <div
+            className={
+              loadingState === 1
+                ? "text-blue-700 transition-all duration-300 "
+                : loadingState === 2
+                ? "text-green-600 transition-all duration-300 "
+                : "text-yellow-400 transition-all duration-300  "
+            }
+          >
+            Loading
+          </div>
+          <div className=" ">
+            {" "}
+            {loadingState === 1 && (
+              <span className="text-blue-700 text-5xl items-center transition-all duration-300 ">.</span>
+            )}
+            {loadingState === 2 && (
+              <span className="text-green-500 text-5xl transition-all duration-300 ">..</span>
+            )}
+            {loadingState === 3 && (
+              <span className="text-yellow-400 text-5xl transition-all duration-300 ">...</span>
+            )}{" "}
+          </div>
         </div>
       )}
 

@@ -18,6 +18,7 @@ const Items = ({ seçenekler, callback, True, UserAnswers }: seçenekler) => {
       {seçenekler.map((us: any) => {
         return (
           <button
+            key={us.id}
             id={us.id}
             onClick={callback}
             value={us.deger}

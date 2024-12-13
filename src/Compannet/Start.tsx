@@ -10,7 +10,7 @@ const Start = () => {
   const Tikla = () => {
     Dispatch(actions.LoadingButton(1));
 
-    setTimeout(() => Dispatch(actions.LoadingButton(0)), 1000);
+    setTimeout(() => Dispatch(actions.LoadingButton(0)), 2000);
     Dispatch(actions.StartButton());
   };
 
